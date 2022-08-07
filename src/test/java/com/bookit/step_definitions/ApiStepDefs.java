@@ -19,6 +19,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.*;
 
 public class ApiStepDefs {
+    //Here is to define my token and assign the value into my step definition
     String token;
     Response response;
     String emailGlobal;
@@ -28,6 +29,8 @@ public class ApiStepDefs {
     @Given("I logged Bookit api using {string} and {string}")
     public void i_logged_Bookit_api_using_and(String email, String password) {
 
+        //define the value in my steps get email & password from the feature file & pass as parameter 2 generateToken()
+        //Pass as parameter to generate token () I create 1 util class accepts 2 parameters email and password
         token = BookItApiUtil.generateToken(email,password);
         emailGlobal = email;
     }
@@ -37,6 +40,9 @@ public class ApiStepDefs {
         System.out.println("token = " + token);
 
         //send a GET request "/api/users/me" endpoint to get current user info
+        //on the second steps I print the value, send request save the response in the response object &
+        //retrieve the token & and share on the next step def
+        //Send guest request 2 sign in point, retrieve the path then return as token + ur token
 
          response = given().accept(ContentType.JSON)
                 .and()
@@ -59,9 +65,11 @@ public class ApiStepDefs {
 
         //get information from database
         //connection is from hooks and it will be ready
+
         String query = "select firstname,lastname,role from users\n" +
                 "where email = '"+emailGlobal+"'";
 
+        //Using map to send one request to get one roll
         Map<String,Object> dbMap = DBUtils.getRowMap(query);
         System.out.println("dbMap = " + dbMap);
         //save db info into variables
